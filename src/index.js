@@ -1,1 +1,15 @@
-console.log("Hello world")
+import React from 'react';
+import ReactDom from 'react-dom';
+
+const element = (
+    <div>
+        <h1>My Todo List</h1>
+        <input placeholder={"search"}/>
+        <ul>
+            <li>Learn React</li>
+            <li>Build Awesome App</li>
+        </ul>
+    </div>
+);
+
+ReactDom.render(element, document.getElementById('root'));
