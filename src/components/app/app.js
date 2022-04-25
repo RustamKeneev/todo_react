@@ -1,32 +1,42 @@
-import React from 'react';
-import ReactDom from 'react-dom';
+import React, {Component} from 'react';
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import TodoList from '../todo-list';
 import ItemStatusFilter from '../item-status-filter';
 import './app.css';
 
-const App = () => {
+export default class App extends Component{
 
-    const todoData = [
-        {label: 'Drink coffee', important: false, id:1},
-        {label: 'Make Awesome App', important: true, id: 2},
-        {label: 'Have a lunch', important: false, id: 3}
-    ]
+    state = {
+        todoData: [
+            {label: 'Drink coffee', important: false, id:1},
+            {label: 'Make Awesome App', important: true, id: 2},
+            {label: 'Have a lunch', important: false, id: 3}
+        ]
+    };
+    deleteItem = (id) => {
+        this.setState(({todoData})=>{
+            const idX = todoData.findIndex((elements)=> elements.id === id);
+            const newArray = [
+                ...todoData.splice(0, idX),
+                ...todoData.slice(idX + 1)
+            ]
+            return{
+                todoData: newArray
+            }
+        })
+    }
 
-    return(
-        <div className={"todo-app"}>
-            <AppHeader toDo={1} done={3}/>
-            <div className={"top-panel d-flex"}>
-                <SearchPanel/>
-                <ItemStatusFilter/>
+    render(){
+        return(
+            <div className={"todo-app"}>
+                <AppHeader toDo={1} done={3}/>
+                <div className={"top-panel d-flex"}>
+                    <SearchPanel/>
+                    <ItemStatusFilter/>
+                </div>
+                <TodoList todos={this.state.todoData} onDeleted={this.deleteItem}/>
             </div>
-            <TodoList todos={todoData} onDeleted={(id)=>{
-                console.log('del',id)
-            }}/>
-        </div>
-    );
+        )
+    }
 };
-export default App;
-
-// ReactDom.render(<App/>, document.getElementById('root'));
